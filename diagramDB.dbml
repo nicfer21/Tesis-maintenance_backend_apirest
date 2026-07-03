@@ -1,0 +1,587 @@
+// Diagrama de la base de datos
+
+//Taxonomy
+Table taxonomy.industry {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  metadata jsonb
+  image varchar
+}
+
+Table taxonomy.business_category {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  metadata jsonb
+  image varchar
+
+  industryId int [ref: > taxonomy.industry.id]
+}
+
+Table taxonomy.facilities {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  metadata jsonb
+  image varchar
+
+  businessCategoryId int [ref: > taxonomy.business_category.id]
+}
+
+Table taxonomy.plant {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  metadata jsonb
+  image varchar
+
+  facilitiesId int [ref:>taxonomy.facilities.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table taxonomy.section {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  metadata jsonb
+  image varchar
+
+  plantId int [ref:>taxonomy.plant.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+enum taxonomy.obj_state {
+  OPERATIVE
+  UNDER_OBSERVATION
+  OUT_OF_SERVICE
+  DEATH
+}
+
+Table taxonomy.system {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  principal_function longtext
+  code varchar(25)
+  metadata jsonb
+  image varchar
+  state obj_state
+
+  sectionId int [ref:>taxonomy.section.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table taxonomy.subsystem {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  code varchar(25)
+  metadata jsonb
+  image varchar
+
+  systemId int [ref:>taxonomy.system.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table taxonomy.asset_maintenance {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  code varchar(25)
+  principal_function varchar
+  //Estándar de desempeño
+  benchmark jsonb
+
+  metadata jsonb
+  image varchar
+  state obj_state
+
+  subsystemId int [ref:>taxonomy.subsystem.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table taxonomy.part {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  code varchar(25)
+  metadata jsonb
+  image varchar
+
+  assetMaintenanceId int [ref:>taxonomy.asset_maintenance.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table taxonomy.component {
+  id int [pk]
+  name varchar(150)
+  description longtext
+  code varchar(25)
+  quantity int
+  metadata jsonb
+  image varchar
+
+  partId int [ref:>taxonomy.part.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+//User
+
+Table user.worker {
+  id int [pk]
+  lastname varchar
+  firstname varchar
+  dni varchar(8) [unique]
+  ruc varchar(11)
+  email varchar
+  phone varchar
+  active boolean [default:true]
+
+  worker_level WorkerLevel
+
+  metadata jsonb
+  image varchar
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+enum WorkerLevel {
+  ADMIN
+  ENGINEER
+  WORKER
+}
+
+Table user.session {
+  id int [pk]
+  metadata jsonb
+  workerId int [ref:>user.worker.id]
+  createdAt timestamp
+}
+
+Table user.credential {
+  id int [pk]
+  password varchar
+  workerId int [ref:>user.worker.id]
+  createdAt timestamp
+}
+
+//Criticality
+
+
+Table criticality.analyses {
+  id int [pk]
+  title varchar
+  description longtext
+  initAnalyses timestamp
+  endAnalyses timestamp
+  completed boolean [default:false]
+
+  workerId int [ref:>user.worker.id]
+  analysesRulesId int [ref:>criticality.analyses_rules.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table criticality.analyses_rules {
+
+  id int [pk]
+  title varchar
+
+  workerId int [ref:>user.worker.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+
+}
+
+
+Table criticality.criterion_severity {
+  id int [pk]
+
+  column1 varchar
+  column2 varchar
+  column3 varchar
+  column4 varchar
+  column5 varchar
+
+  analysesRulesId int [ref:>criticality.analyses_rules.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table criticality.criterion_classification {
+  id int [pk]
+
+  title varchar
+  columnNumber byte
+  value byte
+
+  criterionSeverityId int [ref:>criticality.criterion_severity.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table criticality.failure_frequency {
+  id int [pk]
+  title varchar
+  mtbfLimit int
+  value byte
+
+  analysesRulesId int [ref:>criticality.analyses_rules.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table criticality.criticality_assessment {
+
+  id int [pk]
+
+  critic_title varchar
+  critic_value byte
+
+  medium_title varchar
+  medium_value byte
+
+  low_title varchar
+  low_value varchar
+
+  analysesRulesId int [ref:>criticality.analyses_rules.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+
+}
+
+Table criticality.criticality_system {
+  id int [pk]
+
+  value byte
+  systemId int [ref:>taxonomy.system.id]
+  analysesId int [ref:>criticality.analyses.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+
+}
+
+Table criticality.criticality_asset_maintenance {
+
+  id int [pk]
+
+  column1_value byte
+  column2_value byte
+  column3_value byte
+  column4_value byte
+  column5_value byte
+
+  severity_value byte
+
+  severity_sum byte
+
+  frequency_value byte
+
+  criticality_asset_value byte
+
+  assetMaintenanceId int [ref:>taxonomy.asset_maintenance.id]
+  analysesId int [ref:>criticality.analyses.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+//Maintenance
+
+enum request_priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITIC
+}
+
+enum request_status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+Table maintenance.request {
+  id int [primary key, increment]
+  title varchar
+  code varchar
+  requestDate timestamp
+  approved boolean [default: false]
+  description longtext
+  metadata jsonb
+  image varchar[]
+  requestPriority request_priority
+  requestStatus request_status
+  workerId int [ref: > user.worker.id]
+  systemId int [ref: > taxonomy.system.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+
+Table maintenance.order {
+  id int [primary key, increment]
+  code varchar
+  title varchar
+  status bolean [default: false]
+  canceled bolean [default: false]
+  description longtext
+  metadata jsonb
+  initOrder timestamp
+  finishOrder timestamp
+  handWorkTime int //Tiempo de mano de obra en minutos
+  durationOrder int //Duración en minutos
+  estimatedCost numeric(10,4)
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table maintenance.request_order {
+  id int [primary key, increment]
+  requestId int [ref: > maintenance.request.id]
+  orderId int [ref: > maintenance.order.id]
+}
+
+Table maintenance.order_worker {
+  id int [primary key, increment]
+  orderId int [ref: > maintenance.order.id]
+  workerId int [ref: > user.worker.id]
+}
+
+enum maintenance.strategy {
+  CORRECTIVE_LOCALIZATION
+  CORRECTIVE_DIAGNOSTIC
+  CORRECTIVE_TEMPORAL_REPAIR
+  CORRECTIVE_REPAIR
+  PREVENTIVE_POTENTIAL_FAILURE_DETECTION
+  PREVENTIVE_PREVENTIVE_RESTORATION
+  PREVENTIVE_CONDITION_BASED
+  PREVENTIVE_SCHEDULED_REPLACEMENT
+  PREVENTIVE_ROUTINE_MAINTENANCE
+  PREDICTIVE_THERMOGRAPHY
+  PREDICTIVE_VIBRATIONAL
+  PREDICTIVE_OTHER_PARAMETERS
+}
+
+Table maintenance.activity {
+  id int [primary key, increment]
+  title varchar
+  description longtext
+  strategy maintenance.strategy
+  duration int //Duración en minutos
+  steps jsonb
+  metadata jsonb
+  image varchar[]
+  documentation varchar[]
+  estimatedCost numeric(10,4)
+
+  assetMaintenanceId int [ref: > taxonomy.asset_maintenance.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table maintenance.order_activity {
+  id int [primary key, increment]
+  orderId int [ref: > maintenance.order.id]
+  activityId int [ref: > maintenance.activity.id]
+  activityNumber int
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table maintenance.activity_inventory {
+  id int [primary key, increment]
+  activityId int [ref: > maintenance.activity.id]
+  inventoryId int [ref: > logistic.inventory.id]
+  quantity int
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table maintenance.report {
+  id int [primary key, increment]
+  title varchar
+  description longtext
+  initReport timestamp
+  finishReport timestamp
+  handWorkTime int //Tiempo de mano de obra en minutos
+  durationReport int //Duración en minutos
+  approved bool [default: false]
+  image varchar[]
+  documentation varchar[]
+  totalCost numeric(10,4)
+
+  metadata jsonb
+
+  orderId int [ref: > maintenance.order.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table maintenance.report_activity {
+  id int [primary key, increment]
+  reportId int [ref: > maintenance.report.id]
+  activityId int [ref: > maintenance.activity.id]
+  activityNumber int
+  completed boolean [default: false]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+//Logistic
+
+Table logistic.supplier {
+  id Int [pk]
+  name varchar
+  ruc varchar
+  metadata jsonb
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table logistic.unit {
+  id Int [pk]
+  name varchar
+  description longtext
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+enum logistic.usage_type {
+  CONSUMABLES
+  TOOLS
+  EQUIPMENT
+  RENTED
+  SERVICE
+}
+
+
+Table logistic.for_use {
+  id Int [pk]
+  name varchar
+  description longtext
+  usage_type logistic.usage_type
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table logistic.brand {
+  id Int [pk]
+  name varchar
+  description longtext
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table logistic.model {
+  id Int [pk]
+  name varchar
+  description longtext
+  brandId Int [ref: > logistic.brand.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table logistic.inventory {
+  id Int [pk]
+  name varchar
+  code varchar
+  image varchar
+  metadata jsonb
+
+  for_useId Int [ref: > logistic.for_use.id]
+  modelId Int [ref: > logistic.model.id]
+  unitId Int [ref: > logistic.unit.id]
+  supplierId Int [ref: > logistic.supplier.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table logistic.inventory_detail {
+  id Int [pk]
+  inventoryId Int [ref: > logistic.inventory.id]
+  quantity int
+  cost numeric(10,4)
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+
+Table logistic.entry {
+  id Int [pk]
+  entryDate timestamp
+  document varchar
+  metadata jsonb
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table logistic.entry_detail {
+  id Int [pk]
+  quantity int
+  entryId Int [ref: > logistic.entry.id]
+  inventoryId Int [ref: > logistic.inventory.id]
+  createdAt timestamp
+  updatedAt timestamp
+
+}
+
+Table logistic.inventory_component {
+  id Int [pk]
+  isOriginal boolean [default:true]
+  inventoryId Int [ref: > logistic.inventory.id]
+  componentId Int [ref: > taxonomy.component.id]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table maintenance.report_activity_inventory {
+  id int [primary key, increment]
+  reportActivityId int [ref: > maintenance.report_activity.id]
+  inventoryId int [ref: > logistic.inventory.id]
+  quantity int
+  subtotalCost numeric(10,4)
+
+  createdAt timestamp
+  updatedAt timestamp
+}

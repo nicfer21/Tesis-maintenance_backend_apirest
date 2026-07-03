@@ -1,0 +1,14 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: maintenance_api
+    env_file: docker.env
+    ports:
+      - '3000:3000'
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"  # Descomentar en Linux (Armbian) para acceder a servicios del host
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped

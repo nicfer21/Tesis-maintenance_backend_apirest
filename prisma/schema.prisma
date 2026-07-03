@@ -1,0 +1,757 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["taxonomy", "user", "criticality", "maintenance", "logistic"]
+}
+
+model industry {
+  id                 Int                 @id @default(autoincrement())
+  name               String              @db.VarChar(150)
+  description        String?             @db.Text
+  metadata           Json                @default("{}") @db.JsonB
+  image              String?
+  businessCategories business_category[]
+
+  @@schema("taxonomy")
+}
+
+model business_category {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  industryId Int
+  industry   industry     @relation(fields: [industryId], references: [id], onUpdate: Cascade)
+  facilities facilities[]
+
+  @@schema("taxonomy")
+}
+
+model facilities {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  business_categoryId Int
+  business_category   business_category @relation(fields: [business_categoryId], references: [id], onUpdate: Cascade)
+  plants              plant[]
+
+  @@schema("taxonomy")
+}
+
+model plant {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  facilitiesId Int
+  facilities   facilities @relation(fields: [facilitiesId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
+  sections  section[]
+
+  @@schema("taxonomy")
+}
+
+model section {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  plantId Int
+  plant   plant @relation(fields: [plantId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  systems   system[]
+
+  @@schema("taxonomy")
+}
+
+enum obj_state {
+  OPERATIVE
+  UNDER_OBSERVATION
+  OUT_OF_SERVICE
+  DECOMMISSIONED
+
+  @@schema("taxonomy")
+}
+
+model system {
+  id                 Int       @id @default(autoincrement())
+  name               String    @db.VarChar(150)
+  description        String?   @db.Text
+  principal_function String    @db.Text
+  code               String    @unique
+  metadata           Json      @default("{}") @db.JsonB
+  image              String?
+  state              obj_state
+
+  sectionId Int
+  section   section @relation(fields: [sectionId], references: [id], onUpdate: Cascade)
+
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt()
+  subsystems         subsystem[]
+  criticalitySystems criticality_system[]
+  requests           request[]
+  orders             order[]
+
+  @@schema("taxonomy")
+}
+
+model subsystem {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  code        String  @unique
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  systemId Int
+  system   system @relation(fields: [systemId], references: [id], onUpdate: Cascade)
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt()
+  assetMaintenances asset_maintenance[]
+
+  @@schema("taxonomy")
+}
+
+model asset_maintenance {
+  id                 Int       @id @default(autoincrement())
+  name               String    @db.VarChar(150)
+  description        String?   @db.Text
+  principal_function String    @db.Text
+  code               String
+  benchmark          Json      @default("{}") @db.JsonB
+  metadata           Json      @default("{}") @db.JsonB
+  image              String?
+  state              obj_state
+
+  subsystemId Int
+  subsystem   subsystem @relation(fields: [subsystemId], references: [id], onUpdate: Cascade)
+
+  createdAt                    DateTime                        @default(now())
+  updatedAt                    DateTime                        @updatedAt()
+  components                   component[]
+  criticalityAssetMaintenances criticality_asset_maintenance[]
+  activities                   activity[]
+
+  @@schema("taxonomy")
+}
+
+model component {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  code        String
+  quantity    Int     @db.SmallInt
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  asset_maintenanceId Int
+  asset_maintenance   asset_maintenance @relation(fields: [asset_maintenanceId], references: [id], onUpdate: Cascade)
+
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt()
+  inventoryComponents inventory_component[]
+
+  @@schema("taxonomy")
+}
+
+model worker {
+  id Int @id @default(autoincrement())
+
+  lastname     String
+  firstname    String
+  dni          String      @unique @db.VarChar(8)
+  ruc          String      @unique @db.VarChar(11)
+  email        String      @unique
+  phone        String      @unique
+  status       Boolean     @default(true)
+  worker_level WorkerLevel
+  metadata     Json        @default("{}") @db.JsonB
+  image        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  sessions      session[]
+  credentials   credential[]
+  analysesRules analyses_rules[]
+  requests      request[]
+  orders        order[]
+  orderWorkers  order_worker[]
+
+  @@schema("user")
+}
+
+enum WorkerLevel {
+  ADMIN
+  ENGINEER
+  WORKER
+
+  @@schema("user")
+}
+
+model session {
+  id       Int  @id @default(autoincrement())
+  metadata Json @default("{}") @db.JsonB
+
+  workerId Int
+  worker   worker @relation(fields: [workerId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@schema("user")
+}
+
+model credential {
+  id       Int    @id @default(autoincrement())
+  password String
+  workerId Int    @unique()
+  worker   worker @relation(fields: [workerId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@schema("user")
+}
+
+model analyses_rules {
+  id        Int      @id @default(autoincrement())
+  title     String
+  workerId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  worker                 worker                   @relation(fields: [workerId], references: [id], onUpdate: Cascade)
+  analyses               analyses[]
+  criterionSeverities    criterion_severity[]
+  failureFrequencies     failure_frequency[]
+  criticalityAssessments criticality_assessment[]
+
+  @@schema("criticality")
+}
+
+model analyses {
+  id              Int      @id @default(autoincrement())
+  title           String
+  description     String
+  initAnalyses    DateTime
+  endAnalyses     DateTime
+  completed       Boolean  @default(false)
+  madeBy          String
+  analysesRulesId Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  analysesRules                analyses_rules                  @relation(fields: [analysesRulesId], references: [id], onUpdate: Cascade)
+  criticalitySystems           criticality_system[]
+  criticalityAssetMaintenances criticality_asset_maintenance[]
+
+  @@schema("criticality")
+}
+
+model criterion_severity {
+  id              Int      @id @default(autoincrement())
+  column1         String
+  column2         String
+  column3         String
+  column4         String
+  column5         String
+  analysesRulesId Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  analysesRules            analyses_rules             @relation(fields: [analysesRulesId], references: [id], onUpdate: Cascade)
+  criterionClassifications criterion_classification[]
+
+  @@schema("criticality")
+}
+
+model criterion_classification {
+  id                  Int      @id @default(autoincrement())
+  title               String
+  columnNumber        Int      @db.SmallInt // byte
+  value               Int      @db.SmallInt
+  criterionSeverityId Int
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  criterionSeverity criterion_severity @relation(fields: [criterionSeverityId], references: [id], onUpdate: Cascade)
+
+  @@schema("criticality")
+}
+
+model failure_frequency {
+  id              Int      @id @default(autoincrement())
+  title           String
+  mtbfLimit       Int
+  value           Int      @db.SmallInt
+  analysesRulesId Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  analysesRules analyses_rules @relation(fields: [analysesRulesId], references: [id])
+
+  @@schema("criticality")
+}
+
+model criticality_assessment {
+  id              Int      @id @default(autoincrement())
+  critic_title    String
+  critic_value    Int      @db.SmallInt
+  medium_title    String
+  medium_value    Int      @db.SmallInt
+  low_title       String
+  low_value       String
+  analysesRulesId Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  analysesRules analyses_rules @relation(fields: [analysesRulesId], references: [id])
+
+  @@schema("criticality")
+}
+
+model criticality_system {
+  id         Int      @id @default(autoincrement())
+  value      Int      @db.SmallInt
+  systemId   Int
+  analysesId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  system   system   @relation(fields: [systemId], references: [id])
+  analyses analyses @relation(fields: [analysesId], references: [id])
+
+  @@schema("criticality")
+}
+
+model criticality_asset_maintenance {
+  id                      Int      @id @default(autoincrement())
+  column1_value           Int      @db.SmallInt
+  column2_value           Int      @db.SmallInt
+  column3_value           Int      @db.SmallInt
+  column4_value           Int      @db.SmallInt
+  column5_value           Int      @db.SmallInt
+  severity_value          Int      @db.SmallInt
+  severity_sum            Int      @db.SmallInt
+  frequency_value         Int      @db.SmallInt
+  criticality_asset_value Int      @db.SmallInt
+  assetMaintenanceId      Int
+  analysesId              Int
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  assetMaintenance asset_maintenance @relation(fields: [assetMaintenanceId], references: [id])
+  analyses         analyses          @relation(fields: [analysesId], references: [id])
+
+  @@schema("criticality")
+}
+
+// maintenance
+enum request_priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITIC
+
+  @@schema("maintenance")
+}
+
+enum request_status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+
+  @@schema("maintenance")
+}
+
+model request {
+  id              Int              @id @default(autoincrement())
+  title           String           @db.VarChar
+  code            String           @db.VarChar
+  requestDate     DateTime
+  approved        Boolean          @default(false)
+  description     String           @db.VarChar()
+  metadata        Json             @db.JsonB
+  image           String[] // array de varchar
+  requestPriority request_priority
+  requestStatus   request_status
+
+  workerId Int
+  worker   worker @relation(fields: [workerId], references: [id])
+
+  systemId Int
+  system   system @relation(fields: [systemId], references: [id])
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  requestOrders request_order[]
+
+  @@schema("maintenance")
+}
+
+model order {
+  id            Int              @id @default(autoincrement())
+  title         String           @db.VarChar
+  code          String           @db.VarChar
+  orderDate     DateTime
+  description   String           @db.VarChar()
+  metadata      Json             @db.JsonB
+  image         String[] // array de varchar
+  orderPriority request_priority
+  orderStatus   request_status
+
+  workerId Int
+  worker   worker @relation(fields: [workerId], references: [id])
+
+  systemId Int
+  system   system @relation(fields: [systemId], references: [id])
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  requestOrders   request_order[]
+  orderWorkers    order_worker[]
+  orderActivities order_activity[]
+  reports         report[]
+
+  @@schema("maintenance")
+}
+
+model request_order {
+  id Int @id @default(autoincrement())
+
+  requestId Int
+  orderId   Int
+
+  request request @relation(fields: [requestId], references: [id], onUpdate: Cascade)
+  order   order   @relation(fields: [orderId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("maintenance")
+}
+
+model order_worker {
+  id Int @id @default(autoincrement())
+
+  orderId  Int
+  workerId Int
+
+  order  order  @relation(fields: [orderId], references: [id], onUpdate: Cascade)
+  worker worker @relation(fields: [workerId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("maintenance")
+}
+
+enum strategy {
+  CORRECTIVE_DIAGNOSTIC
+  CORRECTIVE_TEMPORAL_REPAIR
+  CORRECTIVE_REPAIR
+  PREVENTIVE_PREVENTIVE_RESTORATION
+  PREVENTIVE_CONDITION_BASED
+  PREVENTIVE_SCHEDULED_REPLACEMENT
+  PREVENTIVE_ROUTINE_MAINTENANCE
+  PREDICTIVE_THERMOGRAPHY
+  PREDICTIVE_VIBRATIONAL
+  PREDICTIVE_OTHER_PARAMETERS
+
+  @@schema("maintenance")
+}
+
+model activity {
+  id            Int      @id @default(autoincrement())
+  title         String   @db.VarChar
+  description   String   @db.Text()
+  strategy      strategy
+  duration      Int // minutos
+  steps         Json     @db.JsonB
+  metadata      Json     @db.JsonB
+  image         String[] @db.VarChar
+  documentation String[] @db.VarChar
+  estimatedCost Decimal  @db.Decimal(10, 4)
+
+  assetMaintenanceId Int
+  assetMaintenance   asset_maintenance @relation(fields: [assetMaintenanceId], references: [id])
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  orderActivities     order_activity[]
+  activityInventories activity_inventory[]
+  reportActivities    report_activity[]
+
+  @@schema("maintenance")
+}
+
+model order_activity {
+  id             Int      @id @default(autoincrement())
+  orderId        Int
+  activityId     Int
+  activityNumber Int
+  order          order    @relation(fields: [orderId], references: [id])
+  activity       activity @relation(fields: [activityId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("maintenance")
+}
+
+model activity_inventory {
+  id           Int     @id @default(autoincrement())
+  activityId   Int
+  inventoryId  Int
+  quantity     Int
+  subtotalCost Decimal @db.Decimal(10, 4)
+
+  activity  activity  @relation(fields: [activityId], references: [id], onUpdate: Cascade)
+  inventory inventory @relation(fields: [inventoryId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("maintenance")
+}
+
+model report {
+  id             Int      @id @default(autoincrement())
+  title          String   @db.VarChar
+  description    String   @db.Text()
+  initReport     DateTime
+  finishReport   DateTime
+  handWorkTime   Int // minutos
+  durationReport Int // minutos
+  approved       Boolean  @default(false)
+  image          String[]
+  documentation  String[]
+  totalCost      Decimal  @db.Decimal(10, 4)
+  metadata       Json     @db.JsonB
+
+  orderId Int
+  order   order @relation(fields: [orderId], references: [id])
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  reportActivities report_activity[]
+
+  @@schema("maintenance")
+}
+
+model report_activity {
+  id             Int      @id @default(autoincrement())
+  reportId       Int
+  activityId     Int
+  activityNumber Int
+  completed      Boolean  @default(false)
+  report         report   @relation(fields: [reportId], references: [id])
+  activity       activity @relation(fields: [activityId], references: [id])
+
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt
+  reportActivityInventories report_activity_inventory[]
+
+  @@schema("maintenance")
+}
+
+model report_activity_inventory {
+  id               Int     @id @default(autoincrement())
+  reportActivityId Int
+  inventoryId      Int
+  quantity         Int
+  subtotalCost     Decimal @db.Decimal(10, 4)
+
+  reportActivity report_activity @relation(fields: [reportActivityId], references: [id], onUpdate: Cascade)
+  inventory      inventory       @relation(fields: [inventoryId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("maintenance")
+}
+
+//Logistic
+
+model supplier {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt()
+  inventories inventory[]
+
+  @@schema("logistic")
+}
+
+model unit {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(150)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt()
+  inventories inventory[]
+
+  @@schema("logistic")
+}
+
+enum usage_type {
+  CONSUMABLES
+  TOOLS
+  EQUIPMENT
+  RENTED
+  SERVICE
+
+  @@schema("logistic")
+}
+
+model for_use {
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar
+  description String?    @db.Text
+  usage_type  usage_type
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  inventories inventory[]
+
+  @@schema("logistic")
+}
+
+model brand {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  metadata    Json    @default("{}") @db.JsonB
+  image       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  models    model[]
+
+  @@schema("logistic")
+}
+
+model model {
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(150)
+  description String?     @db.Text
+  metadata    Json        @default("{}") @db.JsonB
+  image       String?
+  brandId     Int
+  brand       brand       @relation(fields: [brandId], references: [id], onUpdate: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt()
+  inventories inventory[]
+
+  @@schema("logistic")
+}
+
+model inventory {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(150)
+  description String?  @db.Text
+  metadata    Json     @default("{}") @db.JsonB
+  image       String?
+  forUseId    Int
+  forUse      for_use  @relation(fields: [forUseId], references: [id], onUpdate: Cascade)
+  unitId      Int
+  unit        unit     @relation(fields: [unitId], references: [id], onUpdate: Cascade)
+  modelId     Int
+  model       model    @relation(fields: [modelId], references: [id], onUpdate: Cascade)
+  supplierId  Int
+  supplier    supplier @relation(fields: [supplierId], references: [id], onUpdate: Cascade)
+
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt()
+  reportActivityInventories report_activity_inventory[]
+  activityInventories       activity_inventory[]
+  inventoryDetails          inventory_detail[]
+  entryDetails              entry_detail[]
+  inventoryComponents       inventory_component[]
+
+  @@schema("logistic")
+}
+
+model inventory_detail {
+  id          Int       @id @default(autoincrement())
+  inventoryId Int
+  inventory   inventory @relation(fields: [inventoryId], references: [id], onUpdate: Cascade)
+  quantity    Int
+  cost        Decimal   @db.Decimal(10, 4)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("logistic")
+}
+
+model entry {
+  id        Int      @id @default(autoincrement())
+  entryDate DateTime
+  document  String   @db.VarChar
+  metadata  Json     @db.JsonB
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  entryDetails entry_detail[]
+
+  @@schema("logistic")
+}
+
+model entry_detail {
+  id          Int     @id @default(autoincrement())
+  entryId     Int
+  inventoryId Int
+  quantity    Int
+  cost        Decimal @db.Decimal(10, 4)
+
+  entry     entry     @relation(fields: [entryId], references: [id], onUpdate: Cascade)
+  inventory inventory @relation(fields: [inventoryId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("logistic")
+}
+
+model inventory_component {
+  id          Int     @id @default(autoincrement())
+  inventoryId Int
+  componentId Int
+  isOriginal  Boolean @default(false)
+
+  inventory inventory @relation(fields: [inventoryId], references: [id], onUpdate: Cascade)
+  component component @relation(fields: [componentId], references: [id], onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("logistic")
+}

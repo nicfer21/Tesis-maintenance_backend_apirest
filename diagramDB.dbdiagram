@@ -1,0 +1,982 @@
+{
+  "version": "2.0.0",
+  "darkMode": false,
+  "gridEnabling": true,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "industry",
+        "schemaName": "taxonomy",
+        "x": 16,
+        "y": 16
+      },
+      {
+        "name": "business_category",
+        "schemaName": "taxonomy",
+        "x": 696,
+        "y": 16
+      },
+      {
+        "name": "facilities",
+        "schemaName": "taxonomy",
+        "x": 1336,
+        "y": 16
+      },
+      {
+        "name": "plant",
+        "schemaName": "taxonomy",
+        "x": 1960,
+        "y": 16
+      },
+      {
+        "name": "section",
+        "schemaName": "taxonomy",
+        "x": 2528,
+        "y": 16
+      },
+      {
+        "name": "system",
+        "schemaName": "taxonomy",
+        "x": 3056,
+        "y": 16
+      },
+      {
+        "name": "subsystem",
+        "schemaName": "taxonomy",
+        "x": 3640,
+        "y": 16
+      },
+      {
+        "name": "asset_maintenance",
+        "schemaName": "taxonomy",
+        "x": 4312,
+        "y": 16
+      },
+      {
+        "name": "part",
+        "schemaName": "taxonomy",
+        "x": 4888,
+        "y": 16
+      },
+      {
+        "name": "worker",
+        "schemaName": "user",
+        "x": 16,
+        "y": 248
+      },
+      {
+        "name": "session",
+        "schemaName": "user",
+        "x": 696,
+        "y": 280
+      },
+      {
+        "name": "analyses",
+        "schemaName": "criticality",
+        "x": 488,
+        "y": 16
+      },
+      {
+        "name": "analyses_rules",
+        "schemaName": "criticality",
+        "x": 16,
+        "y": 16
+      },
+      {
+        "name": "criterion_severity",
+        "schemaName": "criticality",
+        "x": 488,
+        "y": 408
+      },
+      {
+        "name": "criterion_classification",
+        "schemaName": "criticality",
+        "x": 1032,
+        "y": 808
+      },
+      {
+        "name": "failure_frequency",
+        "schemaName": "criticality",
+        "x": 488,
+        "y": 776
+      },
+      {
+        "name": "criticality_assessment",
+        "schemaName": "criticality",
+        "x": 488,
+        "y": 1080
+      },
+      {
+        "name": "criticality_system",
+        "schemaName": "criticality",
+        "x": 1032,
+        "y": 16
+      },
+      {
+        "name": "criticality_asset_maintenance",
+        "schemaName": "criticality",
+        "x": 1032,
+        "y": 280
+      },
+      {
+        "name": "credential",
+        "schemaName": "user",
+        "x": 696,
+        "y": 488
+      },
+      {
+        "name": "request",
+        "schemaName": "maintenance",
+        "x": -8,
+        "y": -24
+      },
+      {
+        "name": "order",
+        "schemaName": "maintenance",
+        "x": 16,
+        "y": 504
+      },
+      {
+        "name": "request_order",
+        "schemaName": "maintenance",
+        "x": 776,
+        "y": 16
+      },
+      {
+        "name": "supplier",
+        "schemaName": "logistic",
+        "x": 16,
+        "y": 16
+      },
+      {
+        "name": "unit",
+        "schemaName": "logistic",
+        "x": 16,
+        "y": 280
+      },
+      {
+        "name": "for_use",
+        "schemaName": "logistic",
+        "x": 16,
+        "y": 552
+      },
+      {
+        "name": "brand",
+        "schemaName": "logistic",
+        "x": 16,
+        "y": 824
+      },
+      {
+        "name": "model",
+        "schemaName": "logistic",
+        "x": 824,
+        "y": 392
+      },
+      {
+        "name": "inventory",
+        "schemaName": "logistic",
+        "x": 1216,
+        "y": 16
+      },
+      {
+        "name": "inventory_detail",
+        "schemaName": "logistic",
+        "x": 1680,
+        "y": 16
+      },
+      {
+        "name": "entry",
+        "schemaName": "logistic",
+        "x": 16,
+        "y": 1064
+      },
+      {
+        "name": "entry_detail",
+        "schemaName": "logistic",
+        "x": 1680,
+        "y": 552
+      },
+      {
+        "name": "inventory_component",
+        "schemaName": "logistic",
+        "x": 1680,
+        "y": 280
+      },
+      {
+        "name": "component",
+        "schemaName": "taxonomy",
+        "x": 5520,
+        "y": 16
+      },
+      {
+        "name": "order_worker",
+        "schemaName": "maintenance",
+        "x": -424,
+        "y": 416
+      },
+      {
+        "name": "activity",
+        "schemaName": "maintenance",
+        "x": -16,
+        "y": 967.9672756929641
+      },
+      {
+        "name": "order_activity",
+        "schemaName": "maintenance",
+        "x": 640,
+        "y": 294.0502734855143
+      },
+      {
+        "name": "activity_inventory",
+        "schemaName": "maintenance",
+        "x": 1952,
+        "y": 16
+      },
+      {
+        "name": "report",
+        "schemaName": "maintenance",
+        "x": 752,
+        "y": 624
+      },
+      {
+        "name": "report_activity",
+        "schemaName": "maintenance",
+        "x": 1408,
+        "y": 56
+      },
+      {
+        "name": "report_activity_inventory",
+        "schemaName": "maintenance",
+        "x": 1952,
+        "y": 280
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "worker",
+        "firstSchemaName": "user",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "workerId"
+        ],
+        "secondTableName": "request",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "system",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "systemId"
+        ],
+        "secondTableName": "request",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "request",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "requestId"
+        ],
+        "secondTableName": "request_order",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "order",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "orderId"
+        ],
+        "secondTableName": "request_order",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "worker",
+        "firstSchemaName": "user",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "workerId"
+        ],
+        "secondTableName": "analyses",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "analyses_rules",
+        "firstSchemaName": "criticality",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "analysesRulesId"
+        ],
+        "secondTableName": "analyses",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "worker",
+        "firstSchemaName": "user",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "workerId"
+        ],
+        "secondTableName": "analyses_rules",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "analyses_rules",
+        "firstSchemaName": "criticality",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "analysesRulesId"
+        ],
+        "secondTableName": "criterion_severity",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "criterion_severity",
+        "firstSchemaName": "criticality",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "criterionSeverityId"
+        ],
+        "secondTableName": "criterion_classification",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "analyses_rules",
+        "firstSchemaName": "criticality",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "analysesRulesId"
+        ],
+        "secondTableName": "failure_frequency",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "analyses_rules",
+        "firstSchemaName": "criticality",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "analysesRulesId"
+        ],
+        "secondTableName": "criticality_assessment",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "system",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "systemId"
+        ],
+        "secondTableName": "criticality_system",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "analyses",
+        "firstSchemaName": "criticality",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "analysesId"
+        ],
+        "secondTableName": "criticality_system",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "asset_maintenance",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "assetMaintenanceId"
+        ],
+        "secondTableName": "criticality_asset_maintenance",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "analyses",
+        "firstSchemaName": "criticality",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "analysesId"
+        ],
+        "secondTableName": "criticality_asset_maintenance",
+        "secondSchemaName": "criticality",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "industry",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "industryId"
+        ],
+        "secondTableName": "business_category",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "business_category",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "businessCategoryId"
+        ],
+        "secondTableName": "facilities",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "facilities",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "facilitiesId"
+        ],
+        "secondTableName": "plant",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "plant",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "plantId"
+        ],
+        "secondTableName": "section",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "section",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "sectionId"
+        ],
+        "secondTableName": "system",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "system",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "systemId"
+        ],
+        "secondTableName": "subsystem",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "subsystem",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "subsystemId"
+        ],
+        "secondTableName": "asset_maintenance",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "asset_maintenance",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "assetMaintenanceId"
+        ],
+        "secondTableName": "part",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "worker",
+        "firstSchemaName": "user",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "workerId"
+        ],
+        "secondTableName": "session",
+        "secondSchemaName": "user",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "worker",
+        "firstSchemaName": "user",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "workerId"
+        ],
+        "secondTableName": "credential",
+        "secondSchemaName": "user",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "brand",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "brandId"
+        ],
+        "secondTableName": "model",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "for_use",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "for_useId"
+        ],
+        "secondTableName": "inventory",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "model",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "modelId"
+        ],
+        "secondTableName": "inventory",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "unit",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "unitId"
+        ],
+        "secondTableName": "inventory",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "supplier",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "supplierId"
+        ],
+        "secondTableName": "inventory",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "inventory",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "inventoryId"
+        ],
+        "secondTableName": "inventory_detail",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "entry",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "entryId"
+        ],
+        "secondTableName": "entry_detail",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "inventory",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "inventoryId"
+        ],
+        "secondTableName": "entry_detail",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "inventory",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "inventoryId"
+        ],
+        "secondTableName": "inventory_component",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "part",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "partId"
+        ],
+        "secondTableName": "component",
+        "secondSchemaName": "taxonomy",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "component",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "componentId"
+        ],
+        "secondTableName": "inventory_component",
+        "secondSchemaName": "logistic",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "order",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "orderId"
+        ],
+        "secondTableName": "order_worker",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "worker",
+        "firstSchemaName": "user",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "workerId"
+        ],
+        "secondTableName": "order_worker",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "order",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "orderId"
+        ],
+        "secondTableName": "order_activity",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "activity",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "activityId"
+        ],
+        "secondTableName": "order_activity",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "activity",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "activityId"
+        ],
+        "secondTableName": "activity_inventory",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "inventory",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "inventoryId"
+        ],
+        "secondTableName": "activity_inventory",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "order",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "orderId"
+        ],
+        "secondTableName": "report",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "asset_maintenance",
+        "firstSchemaName": "taxonomy",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "assetMaintenanceId"
+        ],
+        "secondTableName": "activity",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "report",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "reportId"
+        ],
+        "secondTableName": "report_activity",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "activity",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "activityId"
+        ],
+        "secondTableName": "report_activity",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "report_activity",
+        "firstSchemaName": "maintenance",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "reportActivityId"
+        ],
+        "secondTableName": "report_activity_inventory",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "inventory",
+        "firstSchemaName": "logistic",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "inventoryId"
+        ],
+        "secondTableName": "report_activity_inventory",
+        "secondSchemaName": "maintenance",
+        "secondRelation": "*",
+        "checkPoints": []
+      }
+    ]
+  },
+  "views": {}
+}
