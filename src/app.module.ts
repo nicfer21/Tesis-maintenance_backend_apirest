@@ -62,6 +62,10 @@ import { EntryModule } from './module/logistic/entry/entry.module';
 import { EntryDetailModule } from './module/logistic/entry-detail/entry-detail.module';
 import { InventoryComponentModule } from './module/logistic/inventory-component/inventory-component.module';
 
+// FILE MODULES
+import { ImageModule } from './module/file/image/image.module';
+import { PdfModule } from './module/file/pdf/pdf.module';
+
 //Vincular todos los guards para que sean globales, creo que es la mejor opción
 @Module({
   imports: [
@@ -114,6 +118,11 @@ import { InventoryComponentModule } from './module/logistic/inventory-component/
     EntryModule,
     EntryDetailModule,
     InventoryComponentModule,
+
+    // FILE
+
+    ImageModule,
+    PdfModule,
   ],
   controllers: [AppController],
   providers: [

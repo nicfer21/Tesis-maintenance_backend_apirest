@@ -31,6 +31,7 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
           : (errorResponse as any).message || message;
       details = (errorResponse as any).details || null;
     }
+
     // Manejo opcional de errores nativos
     else if (exception instanceof Error) {
       message = exception.message;
