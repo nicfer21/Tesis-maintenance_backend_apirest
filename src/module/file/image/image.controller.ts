@@ -6,10 +6,11 @@ import {
   Post,
   Req,
   StreamableFile,
+  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
 import type { File as MulterFile } from 'multer';
 import { ImageService } from './image.service';
@@ -21,11 +22,25 @@ export class ImageController {
 
   @Public()
   @Post()
-  @UseInterceptors(FilesInterceptor('files', 5))
-  create(@UploadedFiles() files: MulterFile[], @Req() request: Request) {
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'files', maxCount: 5 },
+      { name: 'file', maxCount: 5 },
+    ]),
+  )
+  create(
+    @UploadedFiles()
+    fields: {
+      files?: MulterFile[];
+      file?: MulterFile[];
+    },
+    @Req() request: Request,
+  ) {
+    const files = [...(fields?.files ?? []), ...(fields?.file ?? [])];
+
     if (!files?.length) {
       throw new BadRequestException(
-        'Debe enviar entre 1 y 5 archivos en el campo files',
+        'Debe enviar entre 1 y 5 archivos en el campo files o file',
       );
     }
 
