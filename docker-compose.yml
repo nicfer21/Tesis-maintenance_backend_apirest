@@ -13,4 +13,8 @@ services:
       NODE_ENV: production
     restart: unless-stopped
     volumes:
-      - /mnt/hdd/uploads:/app/uploads
+      - uploads_data:/app/uploads
+
+volumes:
+  uploads_data:
+    driver: local

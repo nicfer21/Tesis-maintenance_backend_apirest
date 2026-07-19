@@ -24,6 +24,8 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/prisma.config.ts ./
 COPY prisma ./prisma
 
+RUN mkdir -p /app/uploads/image /app/uploads/file && chmod -R 755 /app/uploads
+
 ENV NODE_ENV=production
 
 EXPOSE 3000
