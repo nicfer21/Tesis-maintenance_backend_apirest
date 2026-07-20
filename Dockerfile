@@ -25,10 +25,7 @@ COPY --from=builder /app/prisma.config.ts ./
 COPY prisma ./prisma
 
 RUN mkdir -p /app/uploads/image /app/uploads/file && \
-    chown -R node:node /app/uploads && \
-    chmod -R 755 /app/uploads
-
-USER node
+    chmod -R 777 /app/uploads
 
 ENV NODE_ENV=production
 
