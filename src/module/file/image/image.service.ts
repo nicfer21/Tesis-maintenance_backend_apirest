@@ -20,6 +20,10 @@ import {
 
 @Injectable()
 export class ImageService {
+  constructor() {
+    console.log('[ImageService] constructed');
+  }
+
   private readonly allowedMimeTypes = new Set([
     'image/png',
     'image/jpeg',
@@ -34,6 +38,15 @@ export class ImageService {
   ]);
 
   async create(files: MulterFile[], request: Request) {
+    console.log('[ImageService] create called', {
+      count: files.length,
+      names: files.map((item) => item.originalname),
+      mimes: files.map((item) => item.mimetype),
+      uploadDir: IMAGE_STORAGE_DIR,
+      uploadPathEnv: process.env.UPLOAD_PATH ?? null,
+      uploadsPathEnv: process.env.UPLOADS_PATH ?? null,
+    });
+
     if (files.length > 5) {
       throw new BadRequestException(
         'Solo se pueden subir hasta 5 imágenes por solicitud',
@@ -56,10 +69,24 @@ export class ImageService {
         const fileName = safeStoredName(file.originalname, '.webp');
         const filePath = join(IMAGE_STORAGE_DIR, fileName);
 
+        console.log('[ImageService] converting image to webp', {
+          originalName: file.originalname,
+          mimeType: file.mimetype,
+          targetPath: filePath,
+          bufferLength: file.buffer?.length ?? 0,
+        });
+
         await sharp(file.buffer)
           .rotate()
           .webp({ quality: 95 })
           .toFile(filePath);
+
+        console.log('[ImageService] image stored', {
+          originalName: file.originalname,
+          storedAs: fileName,
+          exists: existsSync(filePath),
+          size: existsSync(filePath) ? statSync(filePath).size : 0,
+        });
 
         return {
           fileName,

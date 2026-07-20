@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter/http-exception.filter';
 
 async function bootstrap() {
+  console.log('[bootstrap] starting Nest application');
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
@@ -30,6 +31,11 @@ async function bootstrap() {
 
   app.setGlobalPrefix('/api/');
 
+  console.log('[bootstrap] global prefix configured', '/api/');
+  console.log('[bootstrap] listening on port', process.env.PORT ?? 3000);
+
   await app.listen(process.env.PORT ?? 3000);
+
+  console.log('[bootstrap] application started successfully');
 }
 bootstrap();

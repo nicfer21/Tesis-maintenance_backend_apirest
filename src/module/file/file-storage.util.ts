@@ -1,6 +1,7 @@
+import 'dotenv/config';
 import { existsSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { randomUUID } from 'crypto';
-import { basename, extname, join } from 'path';
+import { basename, extname, isAbsolute, join } from 'path';
 import { BadRequestException } from '@nestjs/common';
 import type { Request } from 'express';
 
@@ -14,9 +15,24 @@ export type StoredFileItem = {
   downloadUrl: string;
 };
 
-export const FILE_ROOT = join(process.cwd(), 'uploads');
+const configuredUploadPath =
+  process.env.UPLOAD_PATH ?? process.env.UPLOADS_PATH ?? 'uploads';
+
+export const FILE_ROOT = isAbsolute(configuredUploadPath)
+  ? configuredUploadPath
+  : join(process.cwd(), configuredUploadPath);
 export const IMAGE_STORAGE_DIR = join(FILE_ROOT, 'image');
 export const FILE_STORAGE_DIR = join(FILE_ROOT, 'file');
+
+console.log('[file-storage] resolved upload paths', {
+  configuredUploadPath,
+  FILE_ROOT,
+  IMAGE_STORAGE_DIR,
+  FILE_STORAGE_DIR,
+  cwd: process.cwd(),
+  uploadPathEnv: process.env.UPLOAD_PATH ?? null,
+  uploadsPathEnv: process.env.UPLOADS_PATH ?? null,
+});
 
 export function ensureStorageDir(directory: string) {
   if (!existsSync(directory)) {

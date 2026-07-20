@@ -11,10 +11,8 @@ services:
     #   - "host.docker.internal:host-gateway"  # Descomentar en Linux (Armbian) para acceder a servicios del host
     environment:
       NODE_ENV: production
+      UPLOAD_PATH: /app/uploads
     restart: unless-stopped
     volumes:
-      - uploads_data:/app/uploads
+      - ./uploads:/app/uploads
 
-volumes:
-  uploads_data:
-    driver: local
